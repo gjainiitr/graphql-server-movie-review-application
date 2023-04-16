@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Movie, Review } from '../schema/mongoose.js';
 
 const moviesList = [
     {
@@ -27,8 +28,17 @@ const reviewsList = [
     }
 ];
 
-const getMovies = (parent) => {
-    return moviesList;
+// Done
+const getMovies = async (parent) => {
+    try {
+        let movies = await Movie.find();        
+        movies.forEach(movie => {
+            movie.id = movie._id.toString();
+        })
+        return movies;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 const getMovieWithReview = (parent, args) => {
@@ -42,10 +52,17 @@ const getMovieWithReview = (parent, args) => {
     return movieWithReviews;
 }
 
-const addMovie = (parent, args) => {
-    let movie = args.input;
-    movie.id = uuidv4();
-    moviesList.push(movie);
+// Done
+const addMovie = async (parent, args) => {
+    let movieInput = args.input;
+    let movie = new Movie(movieInput);
+    try {
+        movie = await movie.save();
+        movie.id = movie._id.toString();
+    } catch (err) {
+
+    }
+    console.log(movie);
     return movie;
 }
 
