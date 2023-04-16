@@ -1,16 +1,23 @@
-const express = require('express');
 const { loadSchemaSync } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+const { ApolloServer } = require('@apollo/server');
+const { startStandaloneServer } = require('@apollo/server/standalone');
 
-const schema = loadSchemaSync('./schema.graphql', {
+const typeDefs = loadSchemaSync("./**/*.graphql", {
     loaders: [new GraphQLFileLoader()]
 });
 
-const app = express();
+const resolvers = {
+    Query: {
+        hello: () => "Hello world"
+    }
+};
 
-app.get('/', (req, res) => {
-    res.send("Hello world");
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+});
+
+startStandaloneServer(server, {
+    listen: { port: 4000 },
 })
-
-const port = 3000;
-app.listen(port);
