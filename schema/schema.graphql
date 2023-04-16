@@ -28,9 +28,14 @@ type ReviewInput {
   comment: String!
 }
 
+type MovieWithReviews {
+  details: Movie!
+  reviews: [Review]!
+}
+
 type Query {
   getMovies: [Movie]
-  getMovie(movieId: ID!): Movie!
+  getMovie(movieId: ID!): MovieWithReviews!
 }
 
 type Mutation {
