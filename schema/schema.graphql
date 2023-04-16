@@ -6,7 +6,7 @@ type Movie {
   genres: [String]!
 }
 
-type MovieInput {
+input MovieInput {
   title: String!
   year: Int!
   rating: Float!
@@ -15,15 +15,15 @@ type MovieInput {
 
 type Review {
   reviewId: ID!
-  movieId: string!
-  userId: string!
+  movieId: String!
+  userId: String!
   rating: Float!
   comment: String!
 }
 
-type ReviewInput {
+input ReviewInput {
   movieId: ID!
-  userId: string!
+  userId: String!
   rating: Float!
   comment: String!
 }

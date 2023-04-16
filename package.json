@@ -9,6 +9,7 @@
   },
   "author": "Gopal Jain",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "@apollo/server": "^4.6.0",
     "@graphql-tools/graphql-file-loader": "^7.5.17",
