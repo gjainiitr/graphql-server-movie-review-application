@@ -1,23 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Movie, Review } from '../schema/mongoose.js';
 
-const moviesList = [
-    {
-        id: 1,
-        title: "Dangal",
-        year: 2016,
-        rating: 8.4,
-        genres: ["Action", "Biography", "Drama", "Sport"],
-    },
-    {
-        id: 2,
-        title: "Jannat 2",
-        year: 2012,
-        rating: 5.4,
-        genres: ["Action", "Crime", "Drama", "Romance", "Thriller"],
-    }
-];
-
 const reviewsList = [
     {
         reviewId: 1,
@@ -66,9 +49,13 @@ const addMovie = async (parent, args) => {
     return movie;
 }
 
+// Doing
 const updateMovie = (parent, args) => {
     let movieId = args.movieId;
-    let newMovieDetails = args.input;
+    let updatedDetails = args.input;
+
+    
+
     let movieDetails = moviesList.find(movie => movie.id == movieId);
     movieDetails = newMovieDetails;
     return movieDetails;
