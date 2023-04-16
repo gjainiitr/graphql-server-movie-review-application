@@ -16,6 +16,7 @@
     "@graphql-tools/load": "^7.8.14",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
-    "graphql-tools": "^8.3.20"
+    "graphql-tools": "^8.3.20",
+    "uuid": "^9.0.0"
   }
 }
