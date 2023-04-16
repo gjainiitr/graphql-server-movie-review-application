@@ -31,9 +31,15 @@ const getMovies = (parent) => {
     return moviesList;
 }
 
-//TODO: Implement logic
 const getMovieWithReview = (parent, args) => {
-
+    let movieId = args.movieId;
+    let movie = moviesList.find(movie => movie.id == movieId);
+    let reviews = reviewsList.filter(review => review.movieId == movieId);
+    let movieWithReviews = {
+        details: movie,
+        reviews: reviews
+    };
+    return movieWithReviews;
 }
 
 const addMovie = (parent, args) => {
@@ -44,7 +50,11 @@ const addMovie = (parent, args) => {
 }
 
 const updateMovie = (parent, args) => {
-
+    let movieId = args.movieId;
+    let newMovieDetails = args.input;
+    let movieDetails = moviesList.find(movie => movie.id == movieId);
+    movieDetails = newMovieDetails;
+    return movieDetails;
 }
 
 const deleteMovie = (parent, args) => {
