@@ -1,76 +1,103 @@
-import { v4 as uuidv4 } from 'uuid';
+import { Movie, Review } from '../schema/mongoose.js';
 
-const moviesList = [
-    {
-        id: 1,
-        title: "Dangal",
-        year: 2016,
-        rating: 8.4,
-        genres: ["Action", "Biography", "Drama", "Sport"],
-    },
-    {
-        id: 2,
-        title: "Jannat 2",
-        year: 2012,
-        rating: 5.4,
-        genres: ["Action", "Crime", "Drama", "Romance", "Thriller"],
+const getMovies = async (parent) => {
+    try {
+        let movies = await Movie.find();        
+        movies.forEach(movie => {
+            movie.id = movie._id.toString();
+        })
+        return movies;
+    } catch (err) {
+        console.log(err);
     }
-];
-
-const reviewsList = [
-    {
-        reviewId: 1,
-        movieId: 2,
-        userId: 111,
-        rating: 3.5,
-        comment: "Best movie ever"
-    }
-];
-
-const getMovies = (parent) => {
-    return moviesList;
 }
 
-const getMovieWithReview = (parent, args) => {
+const getMovieWithReview = async (parent, args) => {
     let movieId = args.movieId;
-    let movie = moviesList.find(movie => movie.id == movieId);
-    let reviews = reviewsList.filter(review => review.movieId == movieId);
-    let movieWithReviews = {
+    let movie = await Movie.findById(movieId);
+    let reviews = await Review.find({movieId: movieId});
+
+    movie.id = movie._id.toString();
+    reviews.forEach(review => {
+        review.reviewId = review._id.toString();
+    })
+
+    let response = {
         details: movie,
         reviews: reviews
-    };
-    return movieWithReviews;
+    }
+    return response;
 }
 
-const addMovie = (parent, args) => {
-    let movie = args.input;
-    movie.id = uuidv4();
-    moviesList.push(movie);
+const addMovie = async (parent, args) => {
+    let movieInput = args.input;
+    let movie = new Movie(movieInput);
+    try {
+        movie = await movie.save();
+        movie.id = movie._id.toString();
+    } catch (err) {
+        console.log(err);
+    }
+    console.log(movie);
     return movie;
 }
 
-const updateMovie = (parent, args) => {
+const updateMovie = async (parent, args) => {
     let movieId = args.movieId;
-    let newMovieDetails = args.input;
-    let movieDetails = moviesList.find(movie => movie.id == movieId);
-    movieDetails = newMovieDetails;
-    return movieDetails;
+    let updatedDetails = args.input;
+    let updatedMovie = await Movie.findByIdAndUpdate(movieId, updatedDetails, {new: true});
+    updatedMovie.id = updatedMovie._id.toString();
+    return updatedMovie;
 }
 
-const deleteMovie = (parent, args) => {
-
+const deleteMovie = async (parent, args) => {
+    let movieId = args.movieId;
+    let deletedMovie, deletedReview;
+    try {
+        deletedMovie = await Movie.findByIdAndDelete(movieId);
+        deletedReview = await Review.deleteMany({movieId: movieId});
+    } catch (err) {
+        console.log(err);
+    }
+    deletedMovie.id = deletedMovie._id.toString();
+    return deletedMovie;
 }
 
-const addReview = (parent, args) => {
-
+const addReview = async (parent, args) => {
+    let reviewInput = args.input;
+    let review = new Review(reviewInput);
+    try {
+        review = await review.save();
+        review.reviewId = review._id.toString();
+    } catch (err) {
+        console.log(err);
+    }
+    return review;
 }
 
-const updateReview = (parent, args) => {
-
+const updateReview = async (parent, args) => {
+    let reviewId = args.reviewId;
+    let updatedDetails = args.input;
+    let updatedReview;
+    try {
+        updatedReview = await Review.findByIdAndUpdate(reviewId, updatedDetails, {new: true});
+    } catch (err) {
+        console.log(err);
+    }
+    updatedReview.reviewId = updatedReview._id.toString();
+    return updatedReview;
 }
 
-const deleteReview = (parent, args) => {
-
+const deleteReview = async (parent, args) => {
+    let reviewId = args.reviewId;
+    let deletedReview;
+    try {
+        deletedReview = await Review.findByIdAndDelete(reviewId);
+    } catch (err) {
+        console.log(err);
+    }
+    deletedReview.reviewId = deletedReview._id.toString();
+    return deletedReview;
 }
 
 const resolvers = {
