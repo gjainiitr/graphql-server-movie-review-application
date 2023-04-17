@@ -39,7 +39,7 @@ const addMovie = async (parent, args) => {
         movie = await movie.save();
         movie.id = movie._id.toString();
     } catch (err) {
-
+        console.log(err);
     }
     console.log(movie);
     return movie;
@@ -81,12 +81,31 @@ const addReview = async (parent, args) => {
     return review;
 }
 
-const updateReview = (parent, args) => {
-
+// Done
+const updateReview = async (parent, args) => {
+    let reviewId = args.reviewId;
+    let updatedDetails = args.input;
+    let updatedReview;
+    try {
+        updatedReview = await Review.findByIdAndUpdate(reviewId, updatedDetails, {new: true});
+    } catch (err) {
+        console.log(err);
+    }
+    updatedReview.reviewId = updatedReview._id.toString();
+    return updatedReview;
 }
 
-const deleteReview = (parent, args) => {
-
+// Done
+const deleteReview = async (parent, args) => {
+    let reviewId = args.reviewId;
+    let deletedReview;
+    try {
+        deletedReview = await Review.findByIdAndDelete(reviewId);
+    } catch (err) {
+        console.log(err);
+    }
+    deletedReview.reviewId = deletedReview._id.toString();
+    return deletedReview;
 }
 
 const resolvers = {
