@@ -1,15 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Movie, Review } from '../schema/mongoose.js';
-
-const reviewsList = [
-    {
-        reviewId: 1,
-        movieId: 2,
-        userId: 111,
-        rating: 3.5,
-        comment: "Best movie ever"
-    }
-];
 
 // Done
 const getMovies = async (parent) => {
@@ -24,15 +13,22 @@ const getMovies = async (parent) => {
     }
 }
 
-const getMovieWithReview = (parent, args) => {
+// Done
+const getMovieWithReview = async (parent, args) => {
     let movieId = args.movieId;
-    let movie = moviesList.find(movie => movie.id == movieId);
-    let reviews = reviewsList.filter(review => review.movieId == movieId);
-    let movieWithReviews = {
+    let movie = await Movie.findById(movieId);
+    let reviews = await Review.find({movieId: movieId});
+
+    movie.id = movie._id.toString();
+    reviews.forEach(review => {
+        review.reviewId = review._id.toString();
+    })
+
+    let response = {
         details: movie,
         reviews: reviews
-    };
-    return movieWithReviews;
+    }
+    return response;
 }
 
 // Done
@@ -61,7 +57,13 @@ const updateMovie = async (parent, args) => {
 // Done
 const deleteMovie = async (parent, args) => {
     let movieId = args.movieId;
-    let deletedMovie = await Movie.findByIdAndDelete(movieId);
+    let deletedMovie, deletedReview;
+    try {
+        deletedMovie = await Movie.findByIdAndDelete(movieId);
+        deletedReview = await Review.deleteMany({movieId: movieId});
+    } catch (err) {
+        console.log(err);
+    }
     deletedMovie.id = deletedMovie._id.toString();
     return deletedMovie;
 }
