@@ -49,24 +49,34 @@ const addMovie = async (parent, args) => {
     return movie;
 }
 
-// Doing
-const updateMovie = (parent, args) => {
+// Done
+const updateMovie = async (parent, args) => {
     let movieId = args.movieId;
     let updatedDetails = args.input;
-
-    
-
-    let movieDetails = moviesList.find(movie => movie.id == movieId);
-    movieDetails = newMovieDetails;
-    return movieDetails;
+    let updatedMovie = await Movie.findByIdAndUpdate(movieId, updatedDetails, {new: true});
+    updatedMovie.id = updatedMovie._id.toString();
+    return updatedMovie;
 }
 
-const deleteMovie = (parent, args) => {
-
+// Done
+const deleteMovie = async (parent, args) => {
+    let movieId = args.movieId;
+    let deletedMovie = await Movie.findByIdAndDelete(movieId);
+    deletedMovie.id = deletedMovie._id.toString();
+    return deletedMovie;
 }
 
-const addReview = (parent, args) => {
-
+// Done
+const addReview = async (parent, args) => {
+    let reviewInput = args.input;
+    let review = new Review(reviewInput);
+    try {
+        review = await review.save();
+        review.reviewId = review._id.toString();
+    } catch (err) {
+        console.log(err);
+    }
+    return review;
 }
 
 const updateReview = (parent, args) => {
