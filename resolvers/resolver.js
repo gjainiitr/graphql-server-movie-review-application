@@ -1,6 +1,5 @@
 import { Movie, Review } from '../schema/mongoose.js';
 
-// Done
 const getMovies = async (parent) => {
     try {
         let movies = await Movie.find();        
@@ -13,7 +12,6 @@ const getMovies = async (parent) => {
     }
 }
 
-// Done
 const getMovieWithReview = async (parent, args) => {
     let movieId = args.movieId;
     let movie = await Movie.findById(movieId);
@@ -31,7 +29,6 @@ const getMovieWithReview = async (parent, args) => {
     return response;
 }
 
-// Done
 const addMovie = async (parent, args) => {
     let movieInput = args.input;
     let movie = new Movie(movieInput);
@@ -45,7 +42,6 @@ const addMovie = async (parent, args) => {
     return movie;
 }
 
-// Done
 const updateMovie = async (parent, args) => {
     let movieId = args.movieId;
     let updatedDetails = args.input;
@@ -54,7 +50,6 @@ const updateMovie = async (parent, args) => {
     return updatedMovie;
 }
 
-// Done
 const deleteMovie = async (parent, args) => {
     let movieId = args.movieId;
     let deletedMovie, deletedReview;
@@ -68,7 +63,6 @@ const deleteMovie = async (parent, args) => {
     return deletedMovie;
 }
 
-// Done
 const addReview = async (parent, args) => {
     let reviewInput = args.input;
     let review = new Review(reviewInput);
@@ -81,7 +75,6 @@ const addReview = async (parent, args) => {
     return review;
 }
 
-// Done
 const updateReview = async (parent, args) => {
     let reviewId = args.reviewId;
     let updatedDetails = args.input;
@@ -95,7 +88,6 @@ const updateReview = async (parent, args) => {
     return updatedReview;
 }
 
-// Done
 const deleteReview = async (parent, args) => {
     let reviewId = args.reviewId;
     let deletedReview;
