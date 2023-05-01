@@ -5,7 +5,7 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { resolvers } from './resolvers/resolver.js';
 import { mongoose } from 'mongoose';
 
-mongoose.connect('mongodb://localhost:27017/graphql-server', { 
+mongoose.connect('mongodb://127.0.0.1/graphql-server', { 
     useNewUrlParser: true, 
     useUnifiedTopology: true 
 })
